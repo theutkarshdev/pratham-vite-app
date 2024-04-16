@@ -23,8 +23,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Pull image from docker hub
-        run: docker pull treelancer/pratham-vite-app:latest 
+        run: |
+          set -e
+          docker pull treelancer/pratham-vite-app:latest
       - name: Delete Old Container
-        run: docker rm -f reactContainer
+        run: |
+          set -e
+          docker stop reactContainer
+          docker rm reactContainer
       - name: Run docker container
         run: docker run -d -p 3000:80 --name reactContainer treelancer/pratham-vite-app
