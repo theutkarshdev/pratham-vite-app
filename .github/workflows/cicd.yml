@@ -16,20 +16,32 @@ jobs:
       - name: Build Docker Image
         run: docker build -t treelancer/pratham-vite-app .
       - name: Publish image to docker hub
-        run: docker push treelancer/pratham-vite-app:latest   
+        run: docker push treelancer/pratham-vite-app:latest
 
-  deploy: 
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Pull image from docker hub
-        run: |
-          set -e
-          docker pull treelancer/pratham-vite-app:latest
-      - name: Delete Old Container
-        run: |
-          set -e
-          docker stop reactContainer
-          docker rm reactContainer
-      - name: Run docker container
-        run: docker run -d -p 3000:80 --name reactContainer treelancer/pratham-vite-app
+  deploy:
+  needs: build
+  runs-on: ubuntu-latest
+  steps:
+    - name: Pull image from docker hub
+      run: |
+        set -e
+        docker pull treelancer/pratham-vite-app:latest
+    - name: Check if container exists
+      id: check_container
+      run: |
+        CONTAINER_NAME="reactContainer"
+        if [ "$(docker ps -aq -f name=$CONTAINER_NAME)" ]; then
+          echo "Container $CONTAINER_NAME exists"
+          exit 0
+        else
+          echo "Container $CONTAINER_NAME does not exist"
+          exit 1
+        fi
+    - name: Stop and remove container if it exists
+      if: steps.check_container.outputs.result == 'Container reactContainer exists'
+      run: |
+        set -e
+        docker stop reactContainer
+        docker rm reactContainer
+    - name: Run docker container
+      run: docker run -d -p 3000:80 --name reactContainer treelancer/pratham-vite-app
