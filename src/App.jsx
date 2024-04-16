@@ -6,7 +6,7 @@ function App() {
   const userName = import.meta.env.VITE_NAME;
   return (
     <>
-      My name is Utkarsh
+      My name is Utkarsh kushwaha
       <h1>VITE_USER : {userEmail || "Not found"}</h1>
       <h1>VITE_NAME : {userName || "Not found"}</h1>
     </>
