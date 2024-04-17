@@ -6,6 +6,12 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 # Install dependencies
 RUN npm install
+
+ARG VITE_NAME=${VITE_NAME}
+ARG VITE_USER=${VITE_USER}
+
+ENV VITE_NAME=${VITE_NAME}
+ENV VITE_USER=${VITE_USER}
 # Copy the rest of the application
 COPY . .
 # Build the app using Vite
