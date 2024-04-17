@@ -41,4 +41,7 @@ jobs:
       - name: Delete Old Container
         run: docker rm -f reactContainerDev
       - name: Run docker container for dev
-        run: docker run -d -p 3001:80 --name reactContainerDev treelancer/pratham-vite-app
+        run: docker run -d -p 3001:80 --name reactContainerDev \
+          -e VITE_NAME="Utkarsh Kushwaha dev" \
+          -e VITE_USER="dev.mitmeerut@gmail.com" \
+          treelancer/pratham-vite-app:${{ github.sha }}
