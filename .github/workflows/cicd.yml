@@ -17,31 +17,31 @@ jobs:
       - name: Build Docker Image
         run: docker build -t treelancer/pratham-vite-app .
       - name: Publish image to docker hub
-        run: docker push treelancer/pratham-vite-app:latest   
+        run: docker push treelancer/pratham-vite-app:latest
 
-  deploy-main: 
+  deploy-main:
     needs: build
     runs-on: self-hosted
     if: github.ref == 'refs/heads/main'
     steps:
       - name: Pull image from docker hub
-        run: docker pull treelancer/pratham-vite-app:latest 
+        run: docker pull treelancer/pratham-vite-app:latest
       - name: Delete Old Container
         run: docker rm -f reactContainer
       - name: Run docker container
         run: docker run -d -p 3000:80 --name reactContainer treelancer/pratham-vite-app
 
-  deploy-dev: 
+  deploy-dev:
     needs: build
     runs-on: self-hosted
     if: github.ref == 'refs/heads/dev'
     steps:
       - name: Pull image from docker hub
-        run: docker pull treelancer/pratham-vite-app:latest 
+        run: docker pull treelancer/pratham-vite-app:latest
       - name: Delete Old Container
         run: docker rm -f reactContainerDev
       - name: Run docker container for dev
         run: docker run -d -p 3001:80 --name reactContainerDev \
           -e VITE_NAME="Utkarsh Kushwaha dev" \
           -e VITE_USER="dev.mitmeerut@gmail.com" \
-          treelancer/pratham-vite-app:${{ github.sha }}
+          treelancer/pratham-vite-app
