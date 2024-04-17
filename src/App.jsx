@@ -1,15 +1,25 @@
 import React from "react";
 import "./App.css";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Layout from './pages/Layout';
+import Home from "./pages/Home";
+import Blog from "./pages/Blog";
+import About from "./pages/About";
+import NoPage from "./pages/NoPage";
+
 
 function App() {
-  const userEmail = import.meta.env.VITE_USER;
-  const userName = import.meta.env.VITE_NAME;
   return (
-    <>
-      My name is Utkarsh kushwaha changes done 2.
-      <h1>VITE_USER : {userEmail || "Not found"}</h1>
-      <h1>VITE_NAME : {userName || "Not found"}</h1>
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Home />} />
+          <Route path="blog" element={<Blog />} />
+          <Route path="about" element={<About />} />
+          <Route path="*" element={<NoPage />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
 
